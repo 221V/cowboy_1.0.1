@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>cowboy_websocket</title>
+<meta charset="utf8">
+<style>
+div.layout{width:800px;margin:0 auto;}
+</style>
+<link rel="stylesheet" href="slides.css" type="text/css">
+</head>
+<body>
+<div class="layout">
+<h1>cowboy_websocket</h1>
+
+<p>The <code>cowboy_websocket</code> module implements the Websocket protocol.</p>
+
+<p>The callbacks for websocket handlers are defined in the manual for the <code>cowboy_websocket_handler</code> behaviour.</p>
+
+<h2>Types</h2>
+
+<h3>close_code() = 1000..4999</h3>
+
+<p>Reason for closing the connection.</p>
+
+<h3>frame() = close | ping | pong | {text | binary | close | ping | pong, iodata()} | {close, close_code(), iodata()}</h3>
+
+<p>Frames that can be sent to the client.</p>
+
+<h2>Meta values</h2>
+
+<h3>websocket_compress</h3>
+
+<p>Type: true | false</p>
+
+<p>Whether a websocket compression extension in in use.</p>
+
+<h3>websocket_version</h3>
+
+<p>Type: 7 | 8 | 13</p>
+
+<p>The version of the Websocket protocol being used.</p>
+
+<h2>Exports</h2>
+
+<p>None.</p>
+</div>
+<script>SyntaxHighlighter.all();</script>
+</body>
+</html>

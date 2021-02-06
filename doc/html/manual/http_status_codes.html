@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>HTTP status codes</title>
+<meta charset="utf8">
+<style>
+div.layout{width:800px;margin:0 auto;}
+</style>
+<link rel="stylesheet" href="slides.css" type="text/css">
+</head>
+<body>
+<div class="layout">
+<h1>HTTP status codes</h1>
+
+<p>This chapter aims to list all HTTP status codes that Cowboy may return, with details on the reasons why. The list given here only includes the replies that Cowboy sends, not user replies.</p>
+
+<h3>100 Continue</h3>
+
+<p>When the client sends an <code>expect: 100-continue</code> header, Cowboy automatically sends a this status code before trying to read the request body. This behavior can be disabled using the appropriate body option.</p>
+
+<h3>101 Switching Protocols</h3>
+
+<p>This is the status code sent when switching to the Websocket protocol.</p>
+
+<h3>200 OK</h3>
+
+<p>This status code is sent by <code>cowboy_rest</code>.</p>
+
+<h3>201 Created</h3>
+
+<p>This status code is sent by <code>cowboy_rest</code>.</p>
+
+<h3>202 Accepted</h3>
+
+<p>This status code is sent by <code>cowboy_rest</code>.</p>
+
+<h3>204 No Content</h3>
+
+<p>This status code is sent when the processing of a request ends without any reply having been sent. It may also be sent by <code>cowboy_rest</code> under normal conditions.</p>
+
+<h3>300 Multiple Choices</h3>
+
+<p>This status code is sent by <code>cowboy_rest</code>.</p>
+
+<h3>301 Moved Permanently</h3>
+
+<p>This status code is sent by <code>cowboy_rest</code>.</p>
+
+<h3>303 See Other</h3>
+
+<p>This status code is sent by <code>cowboy_rest</code>.</p>
+
+<h3>304 Not Modified</h3>
+
+<p>This status code is sent by <code>cowboy_rest</code>.</p>
+
+<h3>307 Temporary Redirect</h3>
+
+<p>This status code is sent by <code>cowboy_rest</code>.</p>
+
+<h3>400 Bad Request</h3>
+
+<p>Cowboy will send this status code for any of the following reasons:</p>
+
+<ul>
+<li>Too many empty lines were sent before the request.</li>
+<li>The request-line could not be parsed.</li>
+<li>Too many headers were sent.</li>
+<li>A header name was too long.</li>
+<li>A header value was too long.</li>
+<li>The host header was missing from an HTTP/1.1 request.</li>
+<li>The host header could not be parsed.</li>
+<li>The requested host was not found.</li>
+<li>The requested path could not be parsed.</li>
+<li>The accept header could not be parsed when using REST.</li>
+<li>REST under normal conditions.</li>
+<li>A Websocket upgrade failed.</li>
+</ul>
+
+<h3>401 Unauthorized</h3>
+
+<p>This status code is sent by <code>cowboy_rest</code>.</p>
+
+<h3>403 Forbidden</h3>
+
+<p>This status code is sent by <code>cowboy_rest</code>.</p>
+
+<h3>404 Not Found</h3>
+
+<p>This status code is sent when the router successfully resolved the host but didn't find a matching path for the request. It may also be sent by <code>cowboy_rest</code> under normal conditions.</p>
+
+<h3>405 Method Not Allowed</h3>
+
+<p>This status code is sent by <code>cowboy_rest</code>.</p>
+
+<h3>406 Not Acceptable</h3>
+
+<p>This status code is sent by <code>cowboy_rest</code>.</p>
+
+<h3>408 Request Timeout</h3>
+
+<p>Cowboy will send this status code to the client if the client started to send a request, indicated by the request-line being received fully, but failed to send all headers in a reasonable time.</p>
+
+<h3>409 Conflict</h3>
+
+<p>This status code is sent by <code>cowboy_rest</code>.</p>
+
+<h3>410 Gone</h3>
+
+<p>This status code is sent by <code>cowboy_rest</code>.</p>
+
+<h3>412 Precondition Failed</h3>
+
+<p>This status code is sent by <code>cowboy_rest</code>.</p>
+
+<h3>413 Request Entity Too Large</h3>
+
+<p>This status code is sent by <code>cowboy_rest</code>.</p>
+
+<h3>414 Request-URI Too Long</h3>
+
+<p>Cowboy will send this status code to the client if the request-line is too long. It may also be sent by <code>cowboy_rest</code> under normal conditions.</p>
+
+<h3>415 Unsupported Media Type</h3>
+
+<p>This status code is sent by <code>cowboy_rest</code>.</p>
+
+<h3>500 Internal Server Error</h3>
+
+<p>This status code is sent when a crash occurs in HTTP, loop or REST handlers, or when an invalid return value is returned. It may also be sent by <code>cowboy_rest</code> under normal conditions.</p>
+
+<h3>501 Not Implemented</h3>
+
+<p>This status code is sent by <code>cowboy_rest</code>.</p>
+
+<h3>503 Service Unavailable</h3>
+
+<p>This status code is sent by <code>cowboy_rest</code>.</p>
+
+<h3>505 HTTP Version Not Supported</h3>
+
+<p>Cowboy only supports the versions 1.0 and 1.1 of HTTP. In all other cases this status code is sent back to the client and the connection is closed.</p>
+</div>
+<script>SyntaxHighlighter.all();</script>
+</body>
+</html>

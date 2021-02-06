@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Hooks</title>
+<meta charset="utf8">
+<style>
+div.layout{width:800px;margin:0 auto;}
+</style>
+<link rel="stylesheet" href="slides.css" type="text/css">
+</head>
+<body>
+<div class="layout">
+<h1>Hooks</h1>
+
+<p>Cowboy provides two hooks. <code>onrequest</code> is called once the request line and headers have been received. <code>onresponse</code> is called just before sending the response.</p>
+
+<h2>Onrequest</h2>
+
+<p>The <code>onrequest</code> hook is called as soon as Cowboy finishes fetching the request headers. It occurs before any other processing, including routing. It can be used to perform any modification needed on the request object before continuing with the processing. If a reply is sent inside this hook, then Cowboy will move on to the next request, skipping any subsequent handling.</p>
+
+<p>This hook is a function that takes a request object as argument, and returns a request object. This function MUST NOT crash. Cowboy will not send any reply if a crash occurs in this function.</p>
+
+<p>You can specify the <code>onrequest</code> hook when creating the listener, inside the request options.</p>
+
+<pre>
+cowboy:start_http(my_http_listener, 100,
+    [{port, 8080}],
+    [
+        {env, [{dispatch, Dispatch}]},
+        {onrequest, fun ?MODULE:debug_hook/1}
+    ]
+).
+</pre>
+
+<p>The following hook function prints the request object everytime a request is received. This can be useful for debugging, for example.</p>
+
+<pre>
+debug_hook(Req) ->
+    erlang:display(Req),
+    Req.
+</pre>
+
+<p>Make sure to always return the last request object obtained.</p>
+
+<h2>Onresponse</h2>
+
+<p>The <code>onresponse</code> hook is called right before sending the response to the socket. It can be used for the purposes of logging responses, or for modifying the response headers or body. The best example is providing custom error pages.</p>
+
+<p>Note that like the <code>onrequest</code> hook, this function MUST NOT crash. Cowboy may or may not send a reply if this function crashes. If a reply is sent, the hook MUST explicitly provide all headers that are needed.</p>
+
+<p>You can specify the <code>onresponse</code> hook when creating the listener.</p>
+
+<pre>
+cowboy:start_http(my_http_listener, 100,
+    [{port, 8080}],
+    [
+        {env, [{dispatch, Dispatch}]},
+        {onresponse, fun ?MODULE:custom_404_hook/4}
+    ]
+).
+</pre>
+
+<p>The following hook function will provide a custom body for 404 errors when it has not been provided before, and will let Cowboy proceed with the default response otherwise.</p>
+
+<pre>
+custom_404_hook(404, Headers, <<>>, Req) ->
+    Body = <<"404 Not Found.">>,
+    Headers2 = lists:keyreplace(<<"content-length">>, 1, Headers,
+        {<<"content-length">>, integer_to_list(byte_size(Body))}),
+    {ok, Req2} = cowboy_req:reply(404, Headers2, Body, Req),
+    Req2;
+custom_404_hook(_, _, _, Req) ->
+    Req.
+</pre>
+
+<p>Again, make sure to always return the last request object obtained.</p>
+</div>
+<script>SyntaxHighlighter.all();</script>
+</body>
+</html>

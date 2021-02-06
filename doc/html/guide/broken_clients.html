@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dealing with broken clients</title>
+<meta charset="utf8">
+<style>
+div.layout{width:800px;margin:0 auto;}
+</style>
+<link rel="stylesheet" href="slides.css" type="text/css">
+</head>
+<body>
+<div class="layout">
+<h1>Dealing with broken clients</h1>
+
+<p>There exists a very large number of implementations for the HTTP protocol. Most widely used clients, like browsers, follow the standard quite well, but others may not. In particular custom enterprise clients tend to be very badly written.</p>
+
+<p>Cowboy tries to follow the standard as much as possible, but is not trying to handle every possible special cases. Instead Cowboy focuses on the cases reported in the wild, on the public Web.</p>
+
+<p>That means clients that ignore the HTTP standard completely may fail to understand Cowboy's responses. There are of course workarounds. This chapter aims to cover them.</p>
+
+<h2>Lowercase headers</h2>
+
+<p>Cowboy converts all headers it receives to lowercase, and similarly sends back headers all in lowercase. Some broken HTTP clients have issues with that.</p>
+
+<p>A simple way to solve this is to create an <code>onresponse</code> hook that will format the header names with the expected case.</p>
+
+<pre>
+capitalize_hook(Status, Headers, Body, Req) ->
+    Headers2 = [{cowboy_bstr:capitalize_token(N), V}
+        || {N, V} <- Headers],
+    {ok, Req2} = cowboy_req:reply(Status, Headers2, Body, Req),
+    Req2.
+</pre>
+
+<p>Note that SPDY clients do not have that particular issue because the specification explicitly says all headers are lowercase, unlike HTTP which allows any case but treats them as case insensitive.</p>
+
+<h2>Camel-case headers</h2>
+
+<p>Sometimes it is desirable to keep the actual case used by clients, for example when acting as a proxy between two broken implementations. There is no easy solution for this other than forking the project and editing the <code>cowboy_protocol</code> file directly.</p>
+
+<h2>Chunked transfer-encoding</h2>
+
+<p>Sometimes an HTTP client advertises itself as HTTP/1.1 but does not support chunked transfer-encoding. This is invalid behavior, as HTTP/1.1 clients are required to support it.</p>
+
+<p>A simple workaround exists in these cases. By changing the Req object response state to <code>waiting_stream</code>, Cowboy will understand that it must use the identity transfer-encoding when replying, just like if it was an HTTP/1.0 client.</p>
+
+<pre>
+Req2 = cowboy_req:set(resp_state, waiting_stream).
+</pre>
+</div>
+<script>SyntaxHighlighter.all();</script>
+</body>
+</html>

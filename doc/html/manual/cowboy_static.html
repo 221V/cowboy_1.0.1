@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>cowboy_static</title>
+<meta charset="utf8">
+<style>
+div.layout{width:800px;margin:0 auto;}
+</style>
+<link rel="stylesheet" href="slides.css" type="text/css">
+</head>
+<body>
+<div class="layout">
+<h1>cowboy_static</h1>
+
+<p>The <code>cowboy_static</code> module implements file serving capabilities by using the REST semantics provided by <code>cowboy_rest</code>.</p>
+
+<h2>Types</h2>
+
+<h3>opts() = {priv_file, atom(), string() | binary()} | {priv_file, atom(), string() | binary(), extra()} | {file, string() | binary()} | {file, string() | binary(), extra()} | {priv_dir, atom(), string() | binary()} | {priv_dir, atom(), string() | binary(), extra()} | {dir, string() | binary()} | {dir, string() | binary(), extra()}</h3>
+
+<p>Configuration for the static handler.</p>
+
+<p>The handler can be configured for sending either one file or a directory (including its subdirectories).</p>
+
+<p>Extra options allow you to define how the etag should be calculated and how the mimetype of files should be detected. They are defined as follow, but do note that these types are not exported, only the <code>opts/0</code> type is public.</p>
+
+<h3>extra() = [extra_etag() | extra_mimetypes()]</h3>
+
+<h3>extra_etag() = {etag, module(), function()} | {etag, false}</h3>
+
+<h3>extra_mimetypes() = {mimetypes, module(), function()} | {mimetypes, binary() | {binary(), binary(), [{binary(), binary()}]}}</h3>
+</div>
+<script>SyntaxHighlighter.all();</script>
+</body>
+</html>

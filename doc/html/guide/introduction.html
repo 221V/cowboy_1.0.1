@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Introduction</title>
+<meta charset="utf8">
+<style>
+div.layout{width:800px;margin:0 auto;}
+</style>
+<link rel="stylesheet" href="slides.css" type="text/css">
+</head>
+<body>
+<div class="layout">
+<h1>Introduction</h1>
+
+<p>Cowboy is a small, fast and modular HTTP server written in Erlang.</p>
+
+<p>Cowboy aims to provide a complete HTTP stack, including its derivatives SPDY, Websocket and REST. Cowboy currently supports HTTP/1.0, HTTP/1.1, Websocket (all implemented drafts + standard) and Webmachine-based REST.</p>
+
+<p>Cowboy is a high quality project. It has a small code base, is very efficient (both in latency and memory use) and can easily be embedded in another application.</p>
+
+<p>Cowboy is clean Erlang code. It includes hundreds of tests and its code is fully compliant with the Dialyzer. It is also well documented and features both a Function Reference and a User Guide.</p>
+
+<h2>Prerequisites</h2>
+
+<p>No Erlang knowledge is required for reading this guide. The reader will be introduced to Erlang concepts and redirected to reference material whenever necessary.</p>
+
+<p>Knowledge of the HTTP protocol is recommended but not required, as it will be detailed throughout the guide.</p>
+
+<h2>Supported platforms</h2>
+
+<p>Cowboy is tested and supported on Linux.</p>
+
+<p>Cowboy has been reported to work on other platforms, but we make no guarantee that the experience will be safe and smooth. You are advised to perform the necessary testing and security audits prior to deploying on other platforms.</p>
+
+<p>Cowboy is developed for Erlang/OTP R16B01, R16B02, R16B03-1, 17.0 and 17.1.2.</p>
+
+<p>Cowboy may be compiled on other Erlang versions with small source code modifications but there is no guarantee that it will work as expected.</p>
+
+<h2>Versioning</h2>
+
+<p>Cowboy uses <a href="http://semver.org/">Semantic Versioning 2.0.0</a>.</p>
+
+<h2>Conventions</h2>
+
+<p>In the HTTP protocol, the method name is case sensitive. All standard method names are uppercase.</p>
+
+<p>Header names are case insensitive. Cowboy converts all the request header names to lowercase, and expects your application to provide lowercase header names in the response.</p>
+
+<p>The same applies to any other case insensitive value.</p>
+</div>
+<script>SyntaxHighlighter.all();</script>
+</body>
+</html>

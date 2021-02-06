@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>cowboy_handler</title>
+<meta charset="utf8">
+<style>
+div.layout{width:800px;margin:0 auto;}
+</style>
+<link rel="stylesheet" href="slides.css" type="text/css">
+</head>
+<body>
+<div class="layout">
+<h1>cowboy_handler</h1>
+
+<p>The <code>cowboy_handler</code> middleware executes the handler passed through the environment values <code>handler</code> and <code>handler_opts</code>, and adds the result of this execution to the environment as the value <code>result</code>, indicating that the request has been handled and received a response.</p>
+
+<p>Environment input:</p>
+
+<ul>
+<li>handler = module()</li>
+<li>handler_opts = any()</li>
+</ul>
+
+<p>Environment output:</p>
+
+<ul>
+<li>result = ok</li>
+</ul>
+
+<h2>Types</h2>
+
+<p>None.</p>
+
+<h2>Exports</h2>
+
+<p>None.</p>
+</div>
+<script>SyntaxHighlighter.all();</script>
+</body>
+</html>

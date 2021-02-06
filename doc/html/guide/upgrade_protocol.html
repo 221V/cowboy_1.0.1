@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Protocol upgrades</title>
+<meta charset="utf8">
+<style>
+div.layout{width:800px;margin:0 auto;}
+</style>
+<link rel="stylesheet" href="slides.css" type="text/css">
+</head>
+<body>
+<div class="layout">
+<h1>Protocol upgrades</h1>
+
+<p>Cowboy features many different handlers, each for different purposes. All handlers have a common entry point: the <code>init/3</code> function.</p>
+
+<p>The default handler type is the simple HTTP handler.</p>
+
+<p>To switch to a different protocol, you must perform a protocol upgrade. This is what is done for Websocket and REST and is explained in details in the respective chapters.</p>
+
+<p>You can also create your own protocol on top of Cowboy and use the protocol upgrade mechanism to switch to it.</p>
+
+<p>For example, if you create the <code>my_protocol</code> module implementing the <code>cowboy_sub_protocol</code> behavior, then you can upgrade to it by simply returning the module name from <code>init/3</code>.</p>
+
+<pre>
+init(_, _, _Opts) ->
+    {upgrade, protocol, my_protocol}.
+</pre>
+
+<p>The <code>cowboy_sub_protocol</code> behavior only requires one callback, <code>upgrade/4</code>. It receives the Req object, the middleware environment, and the handler and options for this request. This is the same module as the <code>init/3</code> function and the same options that were passed to it.</p>
+
+<pre>
+upgrade(Req, Env, Handler, HandlerOpts) ->
+    %% ...
+</pre>
+
+<p>This callback is expected to behave like a middleware. Please see the corresponding chapter for more information.</p>
+</div>
+<script>SyntaxHighlighter.all();</script>
+</body>
+</html>

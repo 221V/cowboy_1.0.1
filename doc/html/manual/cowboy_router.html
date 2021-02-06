@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>cowboy_router</title>
+<meta charset="utf8">
+<style>
+div.layout{width:800px;margin:0 auto;}
+</style>
+<link rel="stylesheet" href="slides.css" type="text/css">
+</head>
+<body>
+<div class="layout">
+<h1>cowboy_router</h1>
+
+<p>The <code>cowboy_router</code> middleware maps the requested host and path to the handler to be used for processing the request. It uses the dispatch rules compiled from the routes given to the <code>compile/1</code> function for this purpose. It adds the handler name and options to the environment as the values <code>handler</code> and <code>handler_opts</code> respectively.</p>
+
+<p>Environment input:</p>
+
+<ul>
+<li>dispatch = dispatch_rules()</li>
+</ul>
+
+<p>Environment output:</p>
+
+<ul>
+<li>handler = module()</li>
+<li>handler_opts = any()</li>
+</ul>
+
+<h2>Types</h2>
+
+<h3>bindings() = [{atom(), binary()}]</h3>
+
+<p>List of bindings found during routing.</p>
+
+<h3>constraints() = [IntConstraint | FunConstraint]</h3>
+
+<p>Types:</p>
+
+<ul>
+<li>IntConstraint = {atom(), int}</li>
+<li>FunConstraint = {atom(), function, Fun}</li>
+<li>Fun = fun((binary()) -> true | {true, any()} | false)</li>
+</ul>
+
+<p>List of constraints to apply to the bindings.</p>
+
+<p>The int constraint will convert the binding to an integer. The fun constraint allows writing custom code for checking the bindings. Returning a new value from that fun allows replacing the current binding with a new value.</p>
+
+<h3>dispatch_rules() - opaque to the user</h3>
+
+<p>Rules for dispatching request used by Cowboy.</p>
+
+<h3>routes() = [{Host, Paths} | {Host, constraints(), Paths}]</h3>
+
+<p>Types:</p>
+
+<ul>
+<li>Host = Path = '_' | iodata()</li>
+<li>Paths = [{Path, Handler, Opts} | {Path, constraints(), Handler, Opts}]</li>
+<li>Handler = module()</li>
+<li>Opts = any()</li>
+</ul>
+
+<p>Human readable list of routes mapping hosts and paths to handlers.</p>
+
+<p>The syntax for routes is defined in the user guide.</p>
+
+<h3>tokens() = [binary()]</h3>
+
+<p>List of host_info and path_info tokens found during routing.</p>
+
+<h2>Exports</h2>
+
+<h3>compile(Routes) -> Dispatch</h3>
+
+<p>Types:</p>
+
+<ul>
+<li>Routes = routes()</li>
+<li>Dispatch = dispatch_rules()</li>
+</ul>
+
+<p>Compile the routes for use by Cowboy.</p>
+</div>
+<script>SyntaxHighlighter.all();</script>
+</body>
+</html>

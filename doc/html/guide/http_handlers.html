@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Handling plain HTTP requests</title>
+<meta charset="utf8">
+<style>
+div.layout{width:800px;margin:0 auto;}
+</style>
+<link rel="stylesheet" href="slides.css" type="text/css">
+</head>
+<body>
+<div class="layout">
+<h1>Handling plain HTTP requests</h1>
+
+<p>The simplest way to handle a request is by writing a plain HTTP handler. It is modeled after Erlang/OTP's gen_server behaviour, although simplified, as Cowboy will simply call the three callbacks sequentially.</p>
+
+<h2>Initialization</h2>
+
+<p>The first callback, <code>init/3</code>, is common to all handlers, as it is used to identify the type of handler. Plain HTTP handlers just return <code>ok</code>.</p>
+
+<pre>
+init(_Type, Req, _Opts) ->
+    {ok, Req, no_state}.
+</pre>
+
+<p>This function receives the name of the transport and protocol modules used for processing the request. They can be used to quickly dismiss requests. For example the following handler will crash when accessed using TCP instead of SSL.</p>
+
+<pre>
+init({ssl, _}, Req, _Opts) ->
+    {ok, Req, no_state}.
+</pre>
+
+<p>This function also receives the options associated with this route that you configured previously. If your handler does not use options, then it is recommended you match the value <code>[]</code> directly to quickly detect configuration errors.</p>
+
+<pre>
+init(_Type, Req, []) ->
+    {ok, Req, no_state}.
+</pre>
+
+<p>You do not need to validate the options unless they are user configured. If they are, and there's a configuration error, you may choose to crash. For example, this will crash if the required <code>lang</code> option is not found.</p>
+
+<pre>
+init(_Type, Req, Opts) ->
+    {_, _Lang} = lists:keyfind(lang, 1, Opts),
+    {ok, Req, no_state}.
+</pre>
+
+<p>If your users are unlikely to figure out the issue without explanations, then you should send a more meaningful error back to the user. Since we already replied to the user, there's no need for us to continue with the handler code, so we use the <code>shutdown</code> return value to stop early.</p>
+
+<pre>
+init(_Type, Req, Opts) ->
+    case lists:keyfind(lang, 1, Opts) of
+        false ->
+            {ok, Req2} = cowboy_req:reply(500, [
+                {<<"content-type">>, <<"text/plain">>}
+            ], "Missing option 'lang'.", Req),
+            {shutdown, Req2, no_state};
+        _ ->
+            {ok, Req, no_state}
+    end.
+</pre>
+
+<p>Once the options have been validated, we can use them safely. So we need to pass them onward to the rest of the handler. That's what the third element of the return tuple, the state, is for.</p>
+
+<p>We recommend that you create a state record for this. The record will make your handler code clearer and will allow you to better use Dialyzer for type checking.</p>
+
+<pre>
+-record(state, {
+    lang :: en | fr
+    %% More fields here.
+}).
+
+init(_Type, Req, Opts) ->
+    {_, Lang} = lists:keyfind(lang, 1, Opts),
+    {ok, Req, #state{lang=Lang}}.
+</pre>
+
+<h2>Handling the request</h2>
+
+<p>The second callback, <code>handle/2</code>, is specific to plain HTTP handlers. It's where you, wait for it, handle the request.</p>
+
+<p>A handle function that does nothing would look like this:</p>
+
+<pre>
+handle(Req, State) ->
+    {ok, Req, State}.
+</pre>
+
+<p>There's no other return value. To obtain information about the request, or send a response, you would use the Req object here. The Req object is documented in its own chapter.</p>
+
+<p>The following handle function will send a fairly original response.</p>
+
+<pre>
+handle(Req, State) ->
+    {ok, Req2} = cowboy_req:reply(200, [
+        {<<"content-type">>, <<"text/plain">>}
+    ], <<"Hello World!">>, Req),
+    {ok, Req2, State}.
+</pre>
+
+<h2>Cleaning up</h2>
+
+<p>The third and last callback, <code>terminate/3</code>, will most likely be empty in your handler.</p>
+
+<pre>
+terminate(_Reason, Req, State) ->
+    ok.
+</pre>
+
+<p>This callback is strictly reserved for any required cleanup. You cannot send a response from this function. There is no other return value.</p>
+
+<p>If you used the process dictionary, timers, monitors or may be receiving messages, then you can use this function to clean them up, as Cowboy might reuse the process for the next keep-alive request.</p>
+
+<p>The chances of any of this happening in your handler are pretty thin however. The use of the process dictionary is discouraged in Erlang code in general. And if you need to use timers, monitors or to receive messages, you are better off with a loop handler, a different kind of handler meant specifically for this use.</p>
+
+<p>This function is still available should you need it. It will always be called.</p>
+</div>
+<script>SyntaxHighlighter.all();</script>
+</body>
+</html>

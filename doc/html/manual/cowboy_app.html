@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>The Cowboy Application</title>
+<meta charset="utf8">
+<style>
+div.layout{width:800px;margin:0 auto;}
+</style>
+<link rel="stylesheet" href="slides.css" type="text/css">
+</head>
+<body>
+<div class="layout">
+<h1>The Cowboy Application</h1>
+
+<p>Small, fast, modular HTTP server.</p>
+
+<h2>Dependencies</h2>
+
+<p>The <code>cowboy</code> application uses the Erlang applications <code>ranch</code> for listening and accepting TCP connections, <code>crypto</code> for establishing Websocket connections, and <code>cowlib</code> for parsing and building messages for Web protocols. These dependencies must be loaded for the <code>cowboy</code> application to work. In an embedded environment this means that they need to be started with the <code>application:start/{1,2}</code> function before the <code>cowboy</code> application is started.</p>
+
+<p>The <code>cowboy</code> application also uses the Erlang applications <code>asn1</code>, <code>public_key</code> and <code>ssl</code> when listening for HTTPS connections. These are started automatically if they weren't before.</p>
+
+<h2>Environment</h2>
+
+<p>The <code>cowboy</code> application does not define any application environment configuration parameters.</p>
+</div>
+<script>SyntaxHighlighter.all();</script>
+</body>
+</html>
