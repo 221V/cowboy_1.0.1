@@ -106,7 +106,7 @@ start(_Type, _Args) ->
 	hello_erlang_sup:start_link().
 </pre>
 
-<p>The dispatch list is explained in great details in the <a href="routing">Routing</a> chapter. For this tutorial we map the path <code>/</code> to the handler module <code>hello_handler</code>. This module doesn't exist yet, we still have to write it.</p>
+<p>The dispatch list is explained in great details in the <a href="routing.html">Routing</a> chapter. For this tutorial we map the path <code>/</code> to the handler module <code>hello_handler</code>. This module doesn't exist yet, we still have to write it.</p>
 
 <p>If you build the release, start it and open <a href="http://localhost:8080">http://localhost:8080</a> now, you will get an error because the module is missing. Any other URL, like <a href="http://localhost:8080/test">http://localhost:8080/test</a>, will result in a 404 error.</p>
 
